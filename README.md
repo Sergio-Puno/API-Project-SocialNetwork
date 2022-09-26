@@ -1,3 +1,5 @@
+#### Status: In Process
+
 # API-Project-SocialNetwork
 Mock API for a social network application
 
@@ -15,4 +17,5 @@ Using Python for this project, packages in use:
 - `pydantic`
 - `passlib` + `bcrypt` function
 - `email-validator`
-- `python-jose1
+- `python-jose`
+
