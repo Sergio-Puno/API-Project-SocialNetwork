@@ -2,3 +2,4 @@
 *.md
 *.conf
 /__pycache__
+/venv
