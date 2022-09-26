@@ -14,3 +14,5 @@ Using Python for this project, packages in use:
 - `configparser`
 - `pydantic`
 - `passlib` + `bcrypt` function
+- `email-validator`
+- `python-jose1

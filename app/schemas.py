@@ -23,3 +23,8 @@ class UserOut(BaseModel):
     id: int
     email: EmailStr
     created_at: datetime
+
+# Depricated in favor of FasAPI Oauth2UserRequestForm
+class UserLogin(BaseModel):
+    email: EmailStr
+    password: str
