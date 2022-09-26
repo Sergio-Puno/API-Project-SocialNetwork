@@ -1,8 +1,0 @@
-/extras
-*.md
-*.conf
-/__pycache__
-/venv
-*.gitignore
-*.gitattributes
-*.DS_Store
