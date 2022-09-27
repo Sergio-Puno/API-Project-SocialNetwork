@@ -4,6 +4,7 @@ from .routers import post, user, auth
 # Create our instance of FasAPI
 app = FastAPI()
 
+
 @app.get("/")
 def root():
     """BASE DIRECTORY"""

@@ -12,13 +12,15 @@ router = APIRouter(
 #-----------  GET  -----------#
 @router.get("/",response_model=List[schemas.Post])
 def get_posts(db: tuple = Depends(get_db), current_user: int = Depends(oauth2.get_current_user)):
-    """RETRIEVE ALL POST LISTINGS"""
+    """RETRIEVE ALL POST LISTINGS FOR CURRENT LOGGED IN USER"""
 
     # DB Connection
     conn, cursor = db
 
+    # Execute query
     cursor.execute("""SELECT * FROM posts;""")
     posts = cursor.fetchall()
+    
     return posts
 
 @router.get("/{id}", response_model=schemas.Post)
@@ -28,6 +30,7 @@ def get_post(id: int, db: tuple = Depends(get_db), current_user: int = Depends(o
     # DB Connection
     conn, cursor = db
 
+    # Execute query
     cursor.execute("""SELECT * FROM posts WHERE id = %s;""", (str(id),))
     post = cursor.fetchone()
 
@@ -45,9 +48,12 @@ def create_posts(post:schemas.PostCreate, db: tuple = Depends(get_db), current_u
     # DB Connection
     conn, cursor = db
 
-    cursor.execute("""INSERT INTO posts (title, content, published) VALUES (%s, %s, %s) RETURNING *;""",
-                    (post.title, post.content, post.published))
+    # Execute query
+    cursor.execute("""INSERT INTO posts (title, content, published, user_id) VALUES (%s, %s, %s, %s) RETURNING *;""",
+                    (post.title, post.content, post.published, current_user['id']))
     new_post = cursor.fetchone()
+
+    # Commit query to database
     conn.commit()
 
     # test print for now to ensure we authenticate user and return the id parsed out from the request
@@ -63,12 +69,20 @@ def update_post(id: int, post: schemas.PostCreate, db: tuple = Depends(get_db), 
     # DB Connection
     conn, cursor = db
 
+    # Execute query
     cursor.execute("""UPDATE posts SET title = %s, content = %s, published = %s WHERE id = %s RETURNING *;""", (post.title, post.content, post.published, str(id)))
-    updated_post = cursor.fetchone()
-    conn.commit()
+    updated_post = cursor.fetchone()["id"]
 
+    # Check if a value is returned from query
     if updated_post == None:
         raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail=f"Post with ID {id} does not exist.")
+
+    # Check if post user is == current logged in user
+    if update_post != current_user['id']:
+        raise HTTPException(status_code=status.HTTP_403_FORBIDDEN, detail="Not authorized to perform requested action.")
+
+    # If there is a valid record and the user is the post owner, then commit the query
+    conn.commit()
 
     return updated_post
 
@@ -80,11 +94,19 @@ def delete_post(id: int, db: tuple = Depends(get_db), current_user: int = Depend
     # DB Connection
     conn, cursor = db
 
+    # Execute query
     cursor.execute("""DELETE FROM posts WHERE id = %s RETURNING *;""", (str(id),))
-    deleted_post = cursor.fetchone()
-    conn.commit()
+    deleted_post = cursor.fetchone()["id"]
     
+    # Check if a value is returned from query
     if deleted_post == None:
         raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail=f"Post with ID {id} does not exist.")
+
+    # Check if post user is == current logged in user
+    if deleted_post != current_user['id']:
+        raise HTTPException(status_code=status.HTTP_403_FORBIDDEN, detail="Not authorized to perform requested action.")
+    
+    # If there is a valid record and the user is the post owner, then commit the query
+    conn.commit()
 
     return Response(status_code=status.HTTP_204_NO_CONTENT)

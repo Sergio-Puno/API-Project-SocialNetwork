@@ -11,9 +11,11 @@ class PostBase(BaseModel):
 class PostCreate(PostBase):
     pass
 
+# Schema for returning Posts to a user
 class Post(PostBase):
     id: int
     created_at: datetime
+    user_id: int
 
 class UserCreate(BaseModel):
     email: EmailStr
@@ -24,7 +26,7 @@ class UserOut(BaseModel):
     email: EmailStr
     created_at: datetime
 
-# Depricated in favor of FasAPI Oauth2UserRequestForm
+# [UserLogin] Depricated in favor of FasAPI Oauth2UserRequestForm
 class UserLogin(BaseModel):
     email: EmailStr
     password: str
