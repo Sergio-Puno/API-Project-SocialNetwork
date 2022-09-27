@@ -11,11 +11,11 @@ Mock API for a social network application
 
 ## Tools
 Using Python for this project, packages in use:
-- `FastAPI`
-- `psycopg2`
-- `configparser`
-- `pydantic`
-- `passlib` + `bcrypt` function
-- `email-validator`
-- `python-jose`
+- [`FastAPI`](https://fastapi.tiangolo.com/)
+- [`psycopg2`](https://www.psycopg.org/docs/)
+- [`configparser`](https://docs.python.org/3/library/configparser.html)
+- [`pydantic`](https://pydantic-docs.helpmanual.io/)
+- [`passlib`](https://passlib.readthedocs.io/en/stable/) & [`bcrypt`](https://pypi.org/project/bcrypt/)
+- [`email-validator`](https://pypi.org/project/email-validator/)
+- [`python-jose`](https://pypi.org/project/python-jose/)
 

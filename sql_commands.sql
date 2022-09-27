@@ -20,3 +20,12 @@ CREATE TABLE users
     PRIMARY KEY (id)
 );
 
+-- Adding foreign key to posts table: posts[user_id] == users[id]
+ALTER TABLE IF EXISTS public.posts
+    ADD COLUMN user_id integer NOT NULL;
+ALTER TABLE IF EXISTS public.posts
+    ADD CONSTRAINT posts_users_fkey FOREIGN KEY (user_id)
+    REFERENCES public.users (id) MATCH SIMPLE
+    ON UPDATE NO ACTION
+    ON DELETE CASCADE
+    NOT VALID;
