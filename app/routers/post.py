@@ -1,5 +1,6 @@
+from operator import concat
 from fastapi import status, HTTPException, Depends, Response, APIRouter
-from typing import List
+from typing import List, Optional
 from .. import schemas, oauth2
 from ..database import get_db
 
@@ -11,14 +12,26 @@ router = APIRouter(
 
 #-----------  GET  -----------#
 @router.get("/",response_model=List[schemas.Post])
-def get_posts(db: tuple = Depends(get_db), current_user: int = Depends(oauth2.get_current_user)):
-    """RETRIEVE ALL POST LISTINGS FOR CURRENT LOGGED IN USER"""
+def get_posts(db: tuple = Depends(get_db), current_user: int = Depends(oauth2.get_current_user),
+            limit: int = 10, search: Optional[str] = ""):
+    """RETRIEVE POSTS BASED ON PARAMETERS"""
 
     # DB Connection
     conn, cursor = db
 
+    # Split search into individual words
+    search_terms = search.split(' ')
+
+    # Build query
+    query = f"""SELECT * FROM posts WHERE title ILIKE '%' || '{search_terms[0]}' || '%'"""
+    
+    for term in search_terms[1:]:
+        modular_query = f""" OR title ILIKE '%' || '{term}' || '%'"""
+        query = concat(query, modular_query)
+
+    #cursor.execute("""SELECT * FROM posts WHERE title ILIKE '%%' || %s || '%%' LIMIT %s;""", (search, limit))
     # Execute query
-    cursor.execute("""SELECT * FROM posts;""")
+    cursor.execute(query)
     posts = cursor.fetchall()
     
     return posts

@@ -3,17 +3,17 @@ from fastapi.security import OAuth2PasswordBearer
 from jose import JWTError, jwt
 from datetime import datetime, timedelta
 from . import schemas, database
+import configparser
 
 oauth2_scheme = OAuth2PasswordBearer(tokenUrl="login")
 
-# SECRET_KEY
-SECRET_KEY = "198df2b8ddbafa9446d763b1f382fc974723b14d68965b2fa5e9c7fc4ef1c242"
-
-# Algorithm 
-ALGORITHM = "HS256"
-
-# Expiration time: testing purposes set to 60
-ACCESS_TOKEN_EXPIRE_MINUTES = 60
+# Auth Config Parameters
+# Random generated string: Run `openssl rand -hex 32` in terminal
+parser = configparser.ConfigParser()
+parser.read("app/conn.conf")
+SECRET_KEY = parser.get("api_config", "SECRET_KEY")
+ALGORITHM = parser.get("api_config", "ALGORITHM")
+ACCESS_TOKEN_EXPIRE_MINUTES = int(parser.get("api_config", "ACCESS_TOKEN_EXPIRE_MINUTES"))
 
 def create_access_token(data: dict):
     """Generate JWT (JSON Web Token) to client on validated login"""
