@@ -1,3 +1,8 @@
+-- SQL queries / commands that I used as I worked through the project
+-- *Note* Some of these could have been aggregated / implemented at once rather
+--   than in sequential order, this is simply how I updated and managed the DB as
+--   I developed the application
+
 -- Creating our "posts" table
 CREATE TABLE users
 (
@@ -29,3 +34,20 @@ ALTER TABLE IF EXISTS public.posts
     ON UPDATE NO ACTION
     ON DELETE CASCADE
     NOT VALID;
+
+-- Creating our "votes" table (more constraints on this table)
+CREATE TABLE votes (
+    post_id INTEGER,
+    user_id INTEGER,
+    PRIMARY KEY (post_id, user_id),
+    CONSTRAINT votes_posts_fk
+        FOREIGN KEY (post_id)
+            REFERENCES posts(id)
+            ON UPDATE NO ACTION
+            ON DELETE CASCADE,
+    CONSTRAINT votes_users_fk
+        FOREIGN KEY (user_id)
+            REFERENCES users(id)
+            ON UPDATE NO ACTION
+            ON DELETE CASCADE
+);

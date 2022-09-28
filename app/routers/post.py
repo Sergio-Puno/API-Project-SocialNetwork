@@ -7,7 +7,7 @@ from ..database import get_db
 # Initialize router and set the path prefix
 router = APIRouter(
     prefix="/posts",
-    tags=["Users"]
+    tags=["Posts"]
 )
 
 #-----------  GET  -----------#

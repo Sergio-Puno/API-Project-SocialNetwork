@@ -8,6 +8,7 @@ router = APIRouter(
     tags=['Authentication']
 )
 
+# TODO: We will need to rework the return statement as we don't want to publicly return the token info
 @router.post("/login", response_model=schemas.Token)
 def login(user_credentials: OAuth2PasswordRequestForm = Depends(), db: tuple = Depends(get_db)):
     """Validate user login credentials"""
