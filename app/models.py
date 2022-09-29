@@ -18,7 +18,6 @@ class Post(Base):
     owner = relationship("User")
 
 
-
 class User(Base):
     __tablename__ = "users"
 

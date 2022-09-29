@@ -1,5 +1,5 @@
 from fastapi import status, HTTPException, Depends, Response, APIRouter
-from typing import Optional
+from typing import Optional, List
 from .. import schemas, oauth2, models
 from ..database import get_db
 from sqlalchemy.orm import Session
@@ -13,10 +13,10 @@ router = APIRouter(
 
 #-----------  GET  -----------#
 # , response_model=schemas.PostOut
-@router.get("/")
+@router.get("/", response_model=List[schemas.PostOut])
 def get_posts(db: Session = Depends(get_db), current_user: int = Depends(oauth2.get_current_user),
             limit: int = 10, search: Optional[str] = "", skip: int = 0):
-    """RETRIEVE POSTS BASED ON PARAMETERS"""
+    """RETRIEVE ALL POSTS BASED ON PARAMETERS"""
 
     posts = db.query(models.Post, func.count(models.Vote.post_id).label("votes")) \
             .join(models.Vote, models.Vote.post_id == models.Post.id, isouter=True) \
@@ -25,8 +25,11 @@ def get_posts(db: Session = Depends(get_db), current_user: int = Depends(oauth2.
             .limit(limit) \
             .offset(skip) \
             .all()
+
+    if not posts:
+        raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail=f"No posts found.")
     
-    print(posts)
+    print()
 
     return posts
 

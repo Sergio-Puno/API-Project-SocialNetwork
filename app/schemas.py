@@ -12,9 +12,15 @@ class UserOut(BaseModel):
         orm_mode = True
 
 class PostBase(BaseModel):
+    id: int
+    created_at: datetime
+    owner: UserOut
     title: str
     content: str
     published: bool = True
+
+    class Config:
+        orm_mode = True
 
 # Schema for creating a post, validate user inputs
 class PostCreate(PostBase):
@@ -22,17 +28,9 @@ class PostCreate(PostBase):
     # such as a "scheduled_post" type thing where a time to go live is specified
     pass
 
-class Post(PostBase):
-    id: int
-    created_at: datetime
-    owner: UserOut
-
-    class Config:
-        orm_mode = True
-
 # Schema for returning Posts to a user, restrict personal info
 class PostOut(BaseModel):
-    Post: Post
+    Post: PostBase
     votes: int
 
     class Config:
