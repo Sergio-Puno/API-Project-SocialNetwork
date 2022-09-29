@@ -4,17 +4,22 @@ from jose import JWTError, jwt
 from datetime import datetime, timedelta
 from . import schemas, database, models
 from sqlalchemy.orm import Session
-import configparser
+# import configparser
+from config import settings
 
 oauth2_scheme = OAuth2PasswordBearer(tokenUrl="login")
 
 # Auth Config Parameters
 # Random generated string: Run `openssl rand -hex 32` in terminal
-parser = configparser.ConfigParser()
-parser.read("app/conn.conf")
-SECRET_KEY = parser.get("api_config", "SECRET_KEY")
-ALGORITHM = parser.get("api_config", "ALGORITHM")
-ACCESS_TOKEN_EXPIRE_MINUTES = int(parser.get("api_config", "ACCESS_TOKEN_EXPIRE_MINUTES"))
+# parser = configparser.ConfigParser()
+# parser.read("app/conn.conf")
+# SECRET_KEY = parser.get("api_config", "SECRET_KEY")
+# ALGORITHM = parser.get("api_config", "ALGORITHM")
+# ACCESS_TOKEN_EXPIRE_MINUTES = int(parser.get("api_config", "ACCESS_TOKEN_EXPIRE_MINUTES"))
+
+SECRET_KEY = settings.secret_key
+ALGORITHM = settings.algorithm
+ACCESS_TOKEN_EXPIRE_MINUTES = settings.access_token_expire_minutes
 
 def create_access_token(data: dict):
     """Generate JWT (JSON Web Token) to client on validated login"""
