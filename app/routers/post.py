@@ -1,8 +1,9 @@
-from operator import concat
 from fastapi import status, HTTPException, Depends, Response, APIRouter
-from typing import List, Optional
-from .. import schemas, oauth2
+from typing import Optional
+from .. import schemas, oauth2, models
 from ..database import get_db
+from sqlalchemy.orm import Session
+from sqlalchemy.sql.functions import func
 
 # Initialize router and set the path prefix
 router = APIRouter(
@@ -11,41 +12,34 @@ router = APIRouter(
 )
 
 #-----------  GET  -----------#
-@router.get("/",response_model=List[schemas.Post])
-def get_posts(db: tuple = Depends(get_db), current_user: int = Depends(oauth2.get_current_user),
-            limit: int = 10, search: Optional[str] = ""):
+# , response_model=schemas.PostOut
+@router.get("/")
+def get_posts(db: Session = Depends(get_db), current_user: int = Depends(oauth2.get_current_user),
+            limit: int = 10, search: Optional[str] = "", skip: int = 0):
     """RETRIEVE POSTS BASED ON PARAMETERS"""
 
-    # DB Connection
-    conn, cursor = db
-
-    # Split search into individual words
-    search_terms = search.split(' ')
-
-    # Build query
-    query = f"""SELECT * FROM posts WHERE title ILIKE '%' || '{search_terms[0]}' || '%'"""
+    posts = db.query(models.Post, func.count(models.Vote.post_id).label("votes")) \
+            .join(models.Vote, models.Vote.post_id == models.Post.id, isouter=True) \
+            .group_by(models.Post.id) \
+            .filter(models.Post.title.contains(search)) \
+            .limit(limit) \
+            .offset(skip) \
+            .all()
     
-    for term in search_terms[1:]:
-        modular_query = f""" OR title ILIKE '%' || '{term}' || '%'"""
-        query = concat(query, modular_query)
+    print(posts)
 
-    #cursor.execute("""SELECT * FROM posts WHERE title ILIKE '%%' || %s || '%%' LIMIT %s;""", (search, limit))
-    # Execute query
-    cursor.execute(query)
-    posts = cursor.fetchall()
-    
     return posts
 
-@router.get("/{id}", response_model=schemas.Post)
-def get_post(id: int, db: tuple = Depends(get_db), current_user: int = Depends(oauth2.get_current_user)):
+@router.get("/{id}", response_model=schemas.PostOut)
+def get_post(id: int, db: Session = Depends(get_db), current_user: int = Depends(oauth2.get_current_user)):
     """RETRIEVE POST DETAILS FOR SUPPLIED POST ID"""
 
-    # DB Connection
-    conn, cursor = db
-
     # Execute query
-    cursor.execute("""SELECT * FROM posts WHERE id = %s;""", (str(id),))
-    post = cursor.fetchone()
+    post = db.query(models.Post, func.count(models.Vote.post_id).label("votes")) \
+            .join(models.Vote, models.Vote.post_id == models.Post.id, isouter=True) \
+            .group_by(models.Post.id) \
+            .filter(models.Post.id == id) \
+            .first()
 
     if not post:
         raise HTTPException(status_code=status.HTTP_404_NOT_FOUND,
@@ -54,8 +48,8 @@ def get_post(id: int, db: tuple = Depends(get_db), current_user: int = Depends(o
     return post
 
 #-----------  POST  -----------#
-@router.post("/", status_code=status.HTTP_201_CREATED, response_model=schemas.Post)
-def create_posts(post:schemas.PostCreate, db: tuple = Depends(get_db), current_user: int = Depends(oauth2.get_current_user)):
+@router.post("/", status_code=status.HTTP_201_CREATED, response_model=schemas.PostCreate)
+def create_posts(post:schemas.PostCreate, db: Session = Depends(get_db), current_user: int = Depends(oauth2.get_current_user)):
     """SUBMIT A NEW POST"""
 
     # DB Connection
@@ -75,8 +69,8 @@ def create_posts(post:schemas.PostCreate, db: tuple = Depends(get_db), current_u
     return new_post
 
 #----------- UPDATE  -----------#
-@router.put("/{id}", response_model=schemas.Post)
-def update_post(id: int, post: schemas.PostCreate, db: tuple = Depends(get_db), current_user: int = Depends(oauth2.get_current_user)):
+@router.put("/{id}", response_model=schemas.PostCreate)
+def update_post(id: int, post: schemas.PostCreate, db: Session = Depends(get_db), current_user: int = Depends(oauth2.get_current_user)):
     """UPDATE AN EXISTING POST"""
 
     # DB Connection
@@ -101,7 +95,7 @@ def update_post(id: int, post: schemas.PostCreate, db: tuple = Depends(get_db), 
 
 #-----------  DELETE  -----------#
 @router.delete("/{id}", status_code=status.HTTP_204_NO_CONTENT)
-def delete_post(id: int, db: tuple = Depends(get_db), current_user: int = Depends(oauth2.get_current_user)):
+def delete_post(id: int, db: Session = Depends(get_db), current_user: int = Depends(oauth2.get_current_user)):
     """REMOVE AN EXISTING POST COMPLETELY"""
 
     # DB Connection

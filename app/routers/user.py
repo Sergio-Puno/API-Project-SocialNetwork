@@ -1,6 +1,7 @@
 from fastapi import status, HTTPException, Depends,APIRouter
-from .. import utils, schemas
+from .. import utils, schemas, models
 from ..database import get_db
+from sqlalchemy.orm import Session
 
 # Initialize router and set the path prefix
 router = APIRouter(
@@ -10,14 +11,12 @@ router = APIRouter(
 
 #----------- GET USER -----------#
 @router.get("/{id}", response_model=schemas.UserOut)
-def get_user(id: int, db: tuple = Depends(get_db)):
+def get_user(id: int, db: Session = Depends(get_db)):
     """SEARCH FOR USER INFORMATION BASED ON ID PROIVDED"""
 
-    # DB Connection
-    conn, cursor = db
-
-    cursor.execute("""SELECT * FROM users WHERE id = %s;""", (str(id),))
-    user = cursor.fetchone()
+    user = db.query(models.User) \
+            .filter(models.User.id == id) \
+            .first()
 
     if not user:
         raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail=f"User with id {id} does not exist.")
@@ -26,18 +25,16 @@ def get_user(id: int, db: tuple = Depends(get_db)):
 
 #----------- CREATE USER -----------#
 @router.post("/", status_code=status.HTTP_201_CREATED, response_model=schemas.UserOut)
-def create_user(user: schemas.UserCreate, db: tuple = Depends(get_db)):
+def create_user(user: schemas.UserCreate, db: Session = Depends(get_db)):
     """CREATE NEW USER AND ADD TO DATABASE: USERS"""
-
-    # DB Connection
-    conn, cursor = db
 
     # Hash password information
     hash_pw = utils.hash(user.password)
     user.password = hash_pw
 
-    cursor.execute("""INSERT INTO users (email, password) VALUES(%s, %s) RETURNING *;""", (user.email, user.password))
-    created_user = cursor.fetchone()
-    conn.commit()
+    new_user = models.User(**user.dict())
+    db.add(new_user)
+    db.commit()
+    db.refresh(new_user)
 
-    return created_user
+    return new_user
