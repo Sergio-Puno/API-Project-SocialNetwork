@@ -4,21 +4,18 @@
 Mock API for a social network application
 Video reference for this project: [Sanjeev Thiyagarajan - Python API Development](https://www.youtube.com/watch?v=0sOvCWFmrtA)
 
+<br />
 
 ---
 
-<img align="left" style="padding-right:40px;" width="220" src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/python/python-original-wordmark.svg"/>
-          
-
-<img align="left" style="padding-right:40px;" width="315" src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/fastapi/fastapi-original-wordmark.svg"/>
 
 
-<img align="left" style="padding-right:71px;" width="230" src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/postgresql/postgresql-original-wordmark.svg"/>  
+<p float="left">
+  <img style="padding-right:30px;" width="240" src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/python/python-original-wordmark.svg"/>
+  <img style="padding-right:40px;" width="300" src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/fastapi/fastapi-original-wordmark.svg"/> 
+  <img style="padding-right:40px;" width="240" src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/postgresql/postgresql-original-wordmark.svg"/>
+</p>
 
-.  <br />
-.  <br />
-.  <br />
-.  <br />
 
 ---
 
