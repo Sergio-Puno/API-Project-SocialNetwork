@@ -11,9 +11,9 @@ Video reference for this project: [Sanjeev Thiyagarajan - Python API Development
 
 
 <p float="left">
-  <img style="padding-right:30px;" width="240" src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/python/python-original-wordmark.svg"/>
-  <img style="padding-right:40px;" width="300" src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/fastapi/fastapi-original-wordmark.svg"/> 
-  <img style="padding-right:40px;" width="240" src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/postgresql/postgresql-original-wordmark.svg"/>
+  <img style="padding-right:50px;" width="32%" src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/python/python-original-wordmark.svg"/>
+  <img style="padding-right:60px;" width="32%" src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/fastapi/fastapi-original-wordmark.svg"/> 
+  <img style="padding-right:40px;" width="32%" src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/postgresql/postgresql-original-wordmark.svg"/>
 </p>
 
 
