@@ -4,6 +4,26 @@
 Mock API for a social network application
 Video reference for this project: [Sanjeev Thiyagarajan - Python API Development](https://www.youtube.com/watch?v=0sOvCWFmrtA)
 
+
+---
+
+<img align="left" style="padding-right:40px;" width="220" src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/python/python-original-wordmark.svg"/>
+          
+
+<img align="left" style="padding-right:40px;" width="315" src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/fastapi/fastapi-original-wordmark.svg"/>
+
+
+<img align="left" style="padding-right:71px;" width="230" src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/postgresql/postgresql-original-wordmark.svg"/>  
+
+.  <br />
+.  <br />
+.  <br />
+.  <br />
+
+---
+
+<br />
+
 ## Main goals for this project
 - Build out an API from scratch
 - Build out local PostgreSQL database
@@ -37,36 +57,9 @@ During the building of this project, several larger concepts or topics came up t
 - Raw SQL vs. ORM
 - Storing Sensitive Information
 - User Authentication
-- Heroku Deployment
+- Heroku/Docker Deployment
 
-I'll discuss each of these briefly to explain the concept, why it is important, and how I dealt with or implemented them within this mock API.
-
-### **Data Validation**
-
-A lot of data validation within this API is handled automatically by FastAPI. We can set expected data types of user inputs and create schemas or models within our app to ensure we validate user inputs before running any database operations.
-
-### **Response Handling**
-
-Within any program you want to make sure you are capturing errors and providing the user with as much useful information about issues as possible. Giving an end user a generic error or not providing additional context will make working with an API difficult.
-
-
-### **Raw SQL vs. ORM**
-
-There are two options when it comes to integrating with your database, you can either use a lightweight direct connection making use of raw SQL strings to perform CRUD operations, or you can make use of something called an ORM (Object Relational Mapping).
-
-An example ORM would be the Python package `SQLAlchemy` which offers us the ability to model out our database tables within Python and use built in functions to perform our queries.
-
-### **Storing Sensitive Data**
-
-An example of sensitive information that would flow through an API is the user's password they would create when setting up their account.
-
-### **User Authentication**
-
-Made use of the token design pattern through JWT. 
-
-### **Setting up Application on Heroku**
-
-For this project I went with Heroku for application deployment. If you are not aware, Heroku will be removing its free tier (hobby-dev) starting Oct 1, 2022. Luckily I was working on this project prior and so I can work on deploying using heroku and learn a bit about deploying using a managed service like Heroku.
+I felt that this project was great in bringing up some of the core concepts when it comes to creating an API and some of the decisions you will have to make during development. I would highly recommend this project video and as with any project try to break thing and go further than what is shown in the course. This is the best way to fail -> research -> learn.
 
 ---
 
