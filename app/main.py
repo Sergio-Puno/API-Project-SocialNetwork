@@ -1,8 +1,19 @@
 from fastapi import FastAPI
 from .routers import post, user, auth, vote
+from fastapi.middleware.cors import CORSMiddleware
 
 # Create our instance of FasAPI
 app = FastAPI()
+
+origins = []
+
+app.middleware(
+    CORSMiddleware,
+    allow_origins=[origins],
+    allow_credentials=True,
+    allow_methods=["*"],
+    allow_headers=["*"]
+)
 
 
 @app.get("/")
