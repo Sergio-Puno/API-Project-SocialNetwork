@@ -1,0 +1,40 @@
+Some helpful commands for working with 
+- Heroku
+- Docker
+
+--- HEROKU ---
+Make sure you are within the correct directory when setting up your Heroku project
+
+-- Pushing changes to Heroku
+git push heroku main
+
+-- Restart your application
+heroku ps:restart
+
+-- Check end of logs
+heroku logs -t
+
+
+--- DOCKER ---
+Working in docker you can either launch a container attached or detached from the terminal
+
+- Launch docker container in detached mode: you can use this terminal as usual
+docker-compose up -d
+
+- Launch container normally (attached form)
+docker-compose up
+
+Benefit of launching detached is that you can check the status of your docker container and
+run other commands without a second terminal window running.
+
+- Check the status of your Docker containers and get their ID
+docker ps
+
+- To enter a container's terminal to look at internals
+docker exec -it <container id> bash
+
+The -it flag standard for interactive mode, which allows you to enter the container's filesystem
+
+
+
+
