@@ -27,45 +27,54 @@ Using Python for this project, packages in use:
 
 Might missed a few but hopefully this list at least contains the main packages (there may be additional dependencies), check the `requirements.txt` file for a full lsit of packages and vesions for this project.
 
-## Topics Covered
+---
+
+# Topics Covered
 During the building of this project, several larger concepts or topics came up that encapsulate the API process:
 
 - Data Validation
 - Response handling
 - Raw SQL vs. ORM
-- Storing sensitive information
+- Storing Sensitive Information
 - User Authentication
+- Heroku Deployment
 
 I'll discuss each of these briefly to explain the concept, why it is important, and how I dealt with or implemented them within this mock API.
 
-### Data Validation
+### **Data Validation**
 
 A lot of data validation within this API is handled automatically by FastAPI. We can set expected data types of user inputs and create schemas or models within our app to ensure we validate user inputs before running any database operations.
 
-### Response Handling
+### **Response Handling**
 
 Within any program you want to make sure you are capturing errors and providing the user with as much useful information about issues as possible. Giving an end user a generic error or not providing additional context will make working with an API difficult.
 
 
-### Raw SQL vs. ORM
+### **Raw SQL vs. ORM**
 
 There are two options when it comes to integrating with your database, you can either use a lightweight direct connection making use of raw SQL strings to perform CRUD operations, or you can make use of something called an ORM (Object Relational Mapping).
 
 An example ORM would be the Python package `SQLAlchemy` which offers us the ability to model out our database tables within Python and use built in functions to perform our queries.
 
-### Storing Sensitive Data
+### **Storing Sensitive Data**
 
 An example of sensitive information that would flow through an API is the user's password they would create when setting up their account.
 
-### User Authentication
+### **User Authentication**
 
 Made use of the token design pattern through JWT. 
+
+### **Setting up Application on Heroku**
+
+For this project I went with Heroku for application deployment. If you are not aware, Heroku will be removing its free tier (hobby-dev) starting Oct 1, 2022. Luckily I was working on this project prior and so I can work on deploying using heroku and learn a bit about deploying using a managed service like Heroku.
+
+---
 
 # Challenges
 
 Wanted to keep note of any issues I had or concepts that were more difficult to implement as well as any decisions I made during the creation of this project. While I did follow along with Sanjeev at various parts of the development process, I did make my own decisons and experimented where able in order to gain additional understanding as to why certain choices could be made.
 
-## ORM or Not?
+### **ORM or Not?**
 
 One of the bigger issues I had dealt with the choice between raw SQL queries or using an ORM (`SQLAlchemy`). Initially I wanted to work through this project using raw SQL instead of switching to using SQLAlchemy as I am very confortable with SQL and would be able to code out the operations quickly.
 
@@ -77,7 +86,7 @@ https://chartio.com/resources/tutorials/how-to-execute-raw-sql-in-sqlalchemy/
 
 The main takeaway here is that ORMs can handle most of the standard operations you would need, and in the end save you quite a bit of both coding time and code length. This depends on the application, the operation, and the extent to which you have to optimize your queries.
 
-## Pydantic Data Classes
+### **Pydantic Data Classes**
 
 I have seen `pydantic` before and am familiar with the idea of data validation through other tools such as `Great Expectations` which is another validation tool for data warehouses. Since pydantic works in conjuctions with FastAPI you will see the two together and while working on this project, I often would get confused as to which tool was performing the validation.
 
@@ -87,7 +96,7 @@ You will be using pydantic in order to setup how certain data should look, and i
 
 Due to this distinction - along with the inherent data conversion - there can be some confusion as to what is actually being validated. The sample provided in the documentation would be the value `4.32` being supplied to a model expecting an int, despite the value originally being a float the model will convert this into just `4` to match the int requirement.
 
-## Alembic for Database Revision Tracking
+### **Alembic for Database Revision Tracking**
 
 Within this project there was the opportunity to use `Alembic` which is a python package that essentially allows us to track database changes similarly to how we use Git for tracking code revisions. The main benefits that this would provide are:
 
