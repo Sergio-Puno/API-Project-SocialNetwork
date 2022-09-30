@@ -42,7 +42,7 @@ Using Python for this project, packages in use:
 - [`email-validator`](https://pypi.org/project/email-validator/)
 - [`python-jose`](https://pypi.org/project/python-jose/)
 
-Might missed a few but hopefully this list at least contains the main packages (there may be additional dependencies), check the `requirements.txt` file for a full lsit of packages and vesions for this project.
+Might have missed a few but hopefully this list at least contains the main packages (there may be additional dependencies), check the `requirements.txt` file for a full list of packages and versions for this project.
 
 ---
 

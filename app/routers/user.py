@@ -9,7 +9,8 @@ router = APIRouter(
     tags=["Users"]
 )
 
-#----------- GET USER -----------#
+
+# ----------- GET USER ----------- #
 @router.get("/{id}", response_model=schemas.UserOut)
 def get_user(id: int, db: Session = Depends(get_db)):
     """SEARCH FOR USER INFORMATION BASED ON ID PROIVDED"""
@@ -23,7 +24,8 @@ def get_user(id: int, db: Session = Depends(get_db)):
 
     return user
 
-#----------- CREATE USER -----------#
+
+# ----------- CREATE USER ----------- #
 @router.post("/", status_code=status.HTTP_201_CREATED, response_model=schemas.UserOut)
 def create_user(user: schemas.UserCreate, db: Session = Depends(get_db)):
     """CREATE NEW USER AND ADD TO DATABASE: USERS"""

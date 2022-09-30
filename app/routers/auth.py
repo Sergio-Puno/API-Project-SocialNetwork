@@ -9,6 +9,7 @@ router = APIRouter(
     tags=['Authentication']
 )
 
+
 # TODO: We will need to rework the return statement as we don't want to publicly return the token info
 @router.post("/login", response_model=schemas.Token)
 def login(user_credentials: OAuth2PasswordRequestForm = Depends(), db: Session = Depends(get_db)):
@@ -17,7 +18,7 @@ def login(user_credentials: OAuth2PasswordRequestForm = Depends(), db: Session =
     user = (db.query(models.User)
             .filter(models.User.email == user_credentials.username)
             .first()
-    )
+            )
 
     # Check if user is in database
     if not user:
