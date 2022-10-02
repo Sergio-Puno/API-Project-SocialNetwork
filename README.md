@@ -40,7 +40,7 @@ Using Python for this project, packages in use:
 - [`sqlalchemy`](https://www.sqlalchemy.org/)
 - [`passlib`](https://passlib.readthedocs.io/en/stable/) & [`bcrypt`](https://pypi.org/project/bcrypt/)
 - [`email-validator`](https://pypi.org/project/email-validator/)
-- [`python-jose`](https://pypi.org/project/python-jose/)
+- [`python-jose`](https://pypi.org/project/python-jose/) *(Note that the import for this is 'jose' within the project files)*
 
 Might have missed a few but hopefully this list at least contains the main packages (there may be additional dependencies), check the `requirements.txt` file for a full list of packages and versions for this project.
 
